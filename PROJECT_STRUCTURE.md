@@ -1,9 +1,9 @@
+# Project Structure
+
+```bash
 ai-wedding-planner/             # Repository root
 ├── /frontend/                  # React app (previously /src and /public)
 │   ├── node_modules            # gitignored (created by npm install)
-│   ├── README.md               # Frontend-specific docs/setup
-│   ├── package-lock.json       # Auto-generated lockfile for frontend
-│   ├── package.json            # Frontend dependencies and scripts
 │   ├── public/                 # Static assets (favicon, index.html, etc.)
 │   │   ├── favicon.ico         # Browser tab icon
 │   │   ├── index.html          # Main HTML template for React app
@@ -24,12 +24,11 @@ ai-wedding-planner/             # Repository root
 │   │   ├── logo.svg            # React logo SVG file
 │   │   ├── reportWebVitals.js  # Performance monitoring utilities
 │   │   └── setupTests.js       # Test environment configuration
+│   ├── README.md               # Frontend-specific docs/setup
+│   ├── package-lock.json       # Auto-generated lockfile for frontend
+│   ├── package.json            # Frontend dependencies and scripts
 │   └── .env.example            # Example env vars for frontend (API URLs etc.)
 ├── /backend/                   # Node/Express API
-│   ├── package.json            # Backend dependencies and scripts
-│   ├── README.md               # Backend-specific docs/setup
-│   ├── .env                    # Backend secrets (not checked in)
-│   ├── .env.example            # Backend env template
 │   ├── src/
 │   │   ├── models/
 │   │   │   ├── Vendor.js
@@ -50,9 +49,13 @@ ai-wedding-planner/             # Repository root
 │   │   ├── db.js               # MongoDB connection
 │   │   └── config/
 │   │       └── default.json    # Backend config (if needed)
+│   ├── package.json            # Backend dependencies and scripts
+│   ├── README.md               # Backend-specific docs/setup
+│   ├── .env                    # Backend secrets (not checked in)
+│   ├── .env.example            # Backend env template
 │   └── server.js               # App/server entry point (could also be index.js)
 ├── .gitignore                  # Top-level git ignore rules
 ├── LICENSE                     # Project license
 ├── project-structure           # Project structure documentation
 ├── README.md                   # Project overview and setup
-├── .env.example                # Top-level env template (shared/global)
+```
