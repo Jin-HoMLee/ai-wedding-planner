@@ -106,12 +106,26 @@ Sample endpoints (see `src/routes/`):
 - `GET /api/guests` – List guests
 - `POST /api/tasks` – Create new task
 
+
 ### Health Check Endpoint
 
 `GET /api/health`
 
 Returns `{ status: 'OK' }` if the backend server is running.
 Useful for monitoring, deployment checks, and automated uptime verification.
+
+#### How to Test
+
+You can test the health check endpoint by:
+
+- Visiting `http://localhost:4000/api/health` in your browser
+- Running `curl http://localhost:4000/api/health` in your terminal
+- Using Postman or Insomnia to send a GET request to `/api/health`
+
+You should receive a response:
+```
+{ "status": "OK" }
+```
 
 Detailed documentation for all endpoints can be found in the source files or will be provided in future updates.
 
