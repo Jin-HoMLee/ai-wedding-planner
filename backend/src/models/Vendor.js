@@ -6,11 +6,11 @@ const mongoose = require('mongoose');
 
 // Define the schema for a wedding vendor
 const vendorSchema = new mongoose.Schema({
-  name: { type: String, required: true },      // Vendor name (required)
-  service: { type: String, required: true },   // Type of service provided (required)
-  contact: { type: String },                   // Contact phone or info (optional)
-  email: { type: String },                     // Contact email (optional)
-  notes: { type: String }                      // Additional notes (optional)
+  name: { type: String, required: true, trim: true, minlength: 2, maxlength: 50 },
+  service: { type: String, required: true, trim: true },
+  contact: { type: String, trim: true },
+  email: { type: String, trim: true, match: /.+\@.+\..+/ },
+  notes: { type: String, maxlength: 200 }
 });
 
 // Create the Vendor model from the schema
