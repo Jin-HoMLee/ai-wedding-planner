@@ -9,6 +9,9 @@ const dotenv = require('dotenv');   // Loads environment variables from .env fil
 // Load environment variables from .env into process.env
 dotenv.config();
 
+// Initiate DB connection
+require('./db'); 
+
 // Initialize Express app
 const app = express(); // Creates the main Express application instance
 
