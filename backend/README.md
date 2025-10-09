@@ -132,46 +132,47 @@ Typical variables include:
 
 ### Model Schemas
 
-Below are the main data models used in the backend. All fields are stored in MongoDB via Mongoose.
+
+Below are the main data models used in the backend. All fields are stored in MongoDB via Mongoose. Validation and trimming are applied as described below.
 
 #### Vendor
 ```
 {
-   name: String (required),
-   service: String (required),
-   contact: String (optional),
-   email: String (optional),
-   notes: String (optional)
+   name: String (required, trim, minlength: 2, maxlength: 50),
+   service: String (required, trim),
+   contact: String (optional, trim),
+   email: String (optional, trim, must be valid email),
+   notes: String (optional, maxlength: 200)
 }
 ```
 
 #### Budget
 ```
 {
-   category: String (required),
-   amount: Number (required),
-   notes: String (optional)
+   category: String (required, trim),
+   amount: Number (required, min: 0),
+   notes: String (optional, maxlength: 200)
 }
 ```
 
 #### Guest
 ```
 {
-   name: String (required),
-   email: String (optional),
-   phone: String (optional),
+   name: String (required, trim),
+   email: String (optional, trim, must be valid email),
+   phone: String (optional, trim),
    rsvp: Boolean (default: false),
-   notes: String (optional)
+   notes: String (optional, maxlength: 200)
 }
 ```
 
 #### Task
 ```
 {
-   title: String (required),
+   title: String (required, trim),
    completed: Boolean (default: false),
    dueDate: Date (optional),
-   notes: String (optional)
+   notes: String (optional, maxlength: 200)
 }
 ```
 
