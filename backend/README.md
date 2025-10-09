@@ -106,8 +106,13 @@ The backend provides API routes for managing wedding vendors, budgets, guests, a
 
 Sample endpoints (see `src/routes/`):
 
+
 - **Vendors**
-   - `GET /api/vendors` – Returns a sample list of vendors
+   - `GET /api/vendors` – Get all vendors
+   - `GET /api/vendors/:id` – Get a single vendor by ID
+   - `POST /api/vendors` – Create a new vendor
+   - `PUT /api/vendors/:id` – Update a vendor by ID
+   - `DELETE /api/vendors/:id` – Delete a vendor by ID
 
 - **Budgets**
    - `GET /api/budgets` – Returns a sample list of budgets
@@ -120,18 +125,41 @@ Sample endpoints (see `src/routes/`):
 
 > **Note:** Full CRUD operations (POST, PUT, DELETE, etc.) will be added in future updates.
 
-#### How to Test Sample Endpoints
 
-You can test the sample GET endpoints by:
+#### How to Test Vendor Endpoints
 
-- Visiting the endpoint in your browser, e.g. `http://localhost:4000/api/vendors`
-- Running a curl command in your terminal, e.g. `curl http://localhost:4000/api/vendors`
-- Using Postman or Insomnia to send a GET request to the endpoint
+You can test the vendor API endpoints using your browser, curl, or API tools like Postman/Insomnia:
 
-You should receive a JSON response with a sample message, e.g.:
-```
-{ "message": "List of vendors (example)" }
-```
+- **GET all vendors**
+   - Browser: `http://localhost:4000/api/vendors`
+   - Terminal: `curl http://localhost:4000/api/vendors`
+
+- **GET a single vendor by ID**
+   - Terminal: `curl http://localhost:4000/api/vendors/<vendor_id>`
+
+- **Create a new vendor (POST)**
+   - Terminal:
+      ```sh
+      curl -X POST http://localhost:4000/api/vendors \
+         -H "Content-Type: application/json" \
+         -d '{"name":"Florist Co","service":"Florist","contact":"123-456","email":"florist@example.com"}'
+      ```
+
+- **Update a vendor (PUT)**
+   - Terminal:
+      ```sh
+      curl -X PUT http://localhost:4000/api/vendors/<vendor_id> \
+         -H "Content-Type: application/json" \
+         -d '{"name":"Updated Florist"}'
+      ```
+
+- **Delete a vendor (DELETE)**
+   - Terminal:
+      ```sh
+      curl -X DELETE http://localhost:4000/api/vendors/<vendor_id>
+      ```
+
+You should receive JSON responses with the vendor data or confirmation messages.
 
 ### Health Check Endpoint
 
