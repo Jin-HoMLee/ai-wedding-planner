@@ -1,6 +1,4 @@
 ai-wedding-planner/             # Repository root
-├── README.md                   # Project overview and setup
-├── .env.example                # Top-level env template (shared/global)
 ├── /frontend/                  # React app (previously /src and /public)
 │   ├── node_modules            # gitignored (created by npm install)
 │   ├── README.md               # Frontend-specific docs/setup
@@ -14,11 +12,18 @@ ai-wedding-planner/             # Repository root
 │   │   ├── manifest.json       # PWA configuration and metadata
 │   │   └── robots.txt          # Web crawler instructions for SEO
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── utils/
+│   │   ├── components/         # Reusable React components
+│   │   ├── pages/              # Main page/route components
+│   │   ├── utils/              # Helper functions and utilities
 │   │   ├── api/                # Frontend API helpers (calls to backend)
-│   │   └── App.js
+│   │   ├── App.css             # Main application styles
+│   │   ├── App.js              # Root React component
+│   │   ├── App.test.js         # Tests for App component
+│   │   ├── index.css           # Global CSS styles
+│   │   ├── index.js            # React app entry point
+│   │   ├── logo.svg            # React logo SVG file
+│   │   ├── reportWebVitals.js  # Performance monitoring utilities
+│   │   └── setupTests.js       # Test environment configuration
 │   └── .env.example            # Example env vars for frontend (API URLs etc.)
 ├── /backend/                   # Node/Express API
 │   ├── package.json            # Backend dependencies and scripts
@@ -46,3 +51,8 @@ ai-wedding-planner/             # Repository root
 │   │   └── config/
 │   │       └── default.json    # Backend config (if needed)
 │   └── server.js               # App/server entry point (could also be index.js)
+├── .gitignore                  # Top-level git ignore rules
+├── LICENSE                     # Project license
+├── project-structure           # Project structure documentation
+├── README.md                   # Project overview and setup
+├── .env.example                # Top-level env template (shared/global)
