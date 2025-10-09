@@ -27,6 +27,7 @@ backend/
 ├── server.js          # Entry point for backend server
 ├── package.json       # Backend dependencies and scripts
 ├── .env.example       # Example backend environment variables
+├── .env               # Backend environment variables
 ├── README.md          # Backend-specific documentation
 ```
 
