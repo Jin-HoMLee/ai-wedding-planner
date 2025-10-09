@@ -131,3 +131,34 @@ ai-wedding-planner/             # Repository root
 ├── PROJECT_STRUCTURE.md        # Project structure documentation
 ├── README.md                   # Project overview and setup
 ```
+
+---
+
+## How to Update
+
+To ensure this documentation stays accurate and helpful for all contributors, please follow these steps whenever you update the project structure:
+
+1. **Add new files or directories:**  
+   - Briefly describe their purpose in the appropriate section above.
+   - Update the "Full Structure" code block to reflect new paths.
+
+2. **Remove or rename files or directories:**  
+   - Update all relevant sections, including "Full Structure."
+   - Remove or modify any descriptions as needed.
+
+3. **Change conventions or organization:**  
+   - Document the new convention and rationale in the "Conventions" section.
+   - If restructuring, add a short migration note for future reference.
+
+4. **Review before major releases:**  
+   - Before releasing a new major version or onboarding new contributors, review this file to ensure all changes are captured.
+
+5. **Keep descriptions concise and clear:**  
+   - Write 1–2 sentences per file/folder for clarity.
+   - Use consistent formatting and comments.
+
+6. **Communicate updates:**  
+   - If the changes are significant, mention the update in your commit message or PR description.
+
+**Maintainer Note:**  
+Keeping this file up-to-date greatly improves onboarding and collaboration for all present and future contributors!
