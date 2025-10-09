@@ -127,7 +127,53 @@ Typical variables include:
 
 
 
+
 ## API Endpoints
+
+### Model Schemas
+
+Below are the main data models used in the backend. All fields are stored in MongoDB via Mongoose.
+
+#### Vendor
+```
+{
+   name: String (required),
+   service: String (required),
+   contact: String (optional),
+   email: String (optional),
+   notes: String (optional)
+}
+```
+
+#### Budget
+```
+{
+   category: String (required),
+   amount: Number (required),
+   notes: String (optional)
+}
+```
+
+#### Guest
+```
+{
+   name: String (required),
+   email: String (optional),
+   phone: String (optional),
+   rsvp: Boolean (default: false),
+   notes: String (optional)
+}
+```
+
+#### Task
+```
+{
+   title: String (required),
+   completed: Boolean (default: false),
+   dueDate: Date (optional),
+   notes: String (optional)
+}
+```
 
 The backend provides API routes for managing wedding vendors, budgets, guests, and tasks. **Currently, only sample GET endpoints are implemented for each resource.** These endpoints return example JSON responses and serve as placeholders for future CRUD functionality.
 
@@ -165,40 +211,43 @@ Sample endpoints (see `src/routes/`):
 > **Note:** Full CRUD operations (POST, PUT, DELETE, etc.) will be added in future updates.
 
 
-#### How to Test Vendor Endpoints
 
-You can test the vendor API endpoints using your browser, curl, or API tools like Postman/Insomnia:
+#### How to Test API Endpoints
 
-- **GET all vendors**
-   - Browser: `http://localhost:4000/api/vendors`
-   - Terminal: `curl http://localhost:4000/api/vendors`
+You can test any resource endpoint (vendors, budgets, guests, tasks) using your browser, curl, or API tools like Postman/Insomnia:
 
-- **GET a single vendor by ID**
-   - Terminal: `curl http://localhost:4000/api/vendors/<vendor_id>`
+- **GET all items**
+   - Browser: `http://localhost:4000/api/<resource>`
+   - Terminal: `curl http://localhost:4000/api/<resource>`
 
-- **Create a new vendor (POST)**
+- **GET a single item by ID**
+   - Terminal: `curl http://localhost:4000/api/<resource>/<id>`
+
+- **Create a new item (POST)**
    - Terminal:
       ```sh
-      curl -X POST http://localhost:4000/api/vendors \
+      curl -X POST http://localhost:4000/api/<resource> \
          -H "Content-Type: application/json" \
-         -d '{"name":"Florist Co","service":"Florist","contact":"123-456","email":"florist@example.com"}'
+         -d '{...json data...}'
       ```
 
-- **Update a vendor (PUT)**
+- **Update an item (PUT)**
    - Terminal:
       ```sh
-      curl -X PUT http://localhost:4000/api/vendors/<vendor_id> \
+      curl -X PUT http://localhost:4000/api/<resource>/<id> \
          -H "Content-Type: application/json" \
-         -d '{"name":"Updated Florist"}'
+         -d '{...json data...}'
       ```
 
-- **Delete a vendor (DELETE)**
+- **Delete an item (DELETE)**
    - Terminal:
       ```sh
-      curl -X DELETE http://localhost:4000/api/vendors/<vendor_id>
+      curl -X DELETE http://localhost:4000/api/<resource>/<id>
       ```
 
-You should receive JSON responses with the vendor data or confirmation messages.
+Replace `<resource>` with `vendors`, `budgets`, `guests`, or `tasks` and provide appropriate JSON data for POST/PUT requests.
+
+You should receive JSON responses with the item data or confirmation messages.
 
 ### Health Check Endpoint
 
