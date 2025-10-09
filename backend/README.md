@@ -17,22 +17,46 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 
 ```
 backend/
+├── node_modules       # (.gitignore)
 ├── src/
-│   ├── models/        # Mongoose schemas (Vendor, Budget, Guest, Task)
-│   ├── routes/
-│   │   ├── health.js  # Health check endpoint (GET /api/health)
-│   │   └── ...        # Other Express routers for each resource
+│   ├── __tests__/     # Automated Jest/Supertest test files
+│   │   ├── budgets.test.js
+│   │   ├── guests.test.js
+│   │   ├── tasks.test.js
+│   │   └── vendors.test.js
+│   ├── config/
+│   │   ├── default.json    # Backend config 
+│   │   ├── production.json # Production config
+│   │   └── test.json       # Test config
 │   ├── controllers/   # Business logic for API endpoints
+│   │   ├── vendorController.js
+│   │   ├── budgetController.js
+│   │   ├── guestController.js
+│   │   └── taskController.js
 │   ├── middleware/
 │   │   └── validation.js # Express-validator middleware for request validation
+│   ├── models/        # Mongoose schemas
+│   │   ├── Vendor.js   # Vendor schema
+│   │   ├── Budget.js   # Budget schema
+│   │   ├── Guest.js    # Guest schema
+│   │   └── Task.js     # Task schema
+│   ├── routes/
+│   │   ├── health.js   # Health check endpoint (GET /api/health)
+│   │   ├── vendors.js  # Vendor resource API routes
+│   │   ├── budgets.js  # Budget resource API routes
+│   │   ├── guests.js   # Guest resource API routes
+│   │   └── tasks.js    # Task resource API routes
+│   ├── testSetup/    # Test environment setup (e.g., in-memory MongoDB)
+│   │   └── setup.js
 │   ├── app.js         # Main Express app setup (middleware, routes, exports app)
-│   ├── db.js          # MongoDB connection logic (initiates DB connection)
-│   └── config/        # Configuration files (default.json)
-├── server.js          # Entry point for backend server (imports app, starts server)
-├── package.json       # Backend dependencies and scripts
+│   └── db.js          # MongoDB connection logic (initiates DB connection)
+├── .env               # Backend environment variables (.gitignore)
 ├── .env.example       # Example backend environment variables
-├── .env               # Backend environment variables
+├── jest.config.js
+├── package-lock.json
+├── package.json       # Backend dependencies and scripts
 ├── README.md          # Backend-specific documentation
+└── server.js          # Entry point for backend server (imports app, starts server)
 ```
 
 ---
@@ -124,6 +148,56 @@ Typical variables include:
 
 - `npm start`: Starts the backend server.
 - `npm run dev`: Starts the backend with nodemon for development (if configured).
+- `npm test`: Runs automated backend tests using Jest and Supertest.
+
+---
+
+## Testing
+
+Automated tests are set up using [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest) for API endpoint testing. Tests use an in-memory MongoDB instance provided by [MongoMemoryServer](https://github.com/nodkz/mongodb-memory-server), so no external database is required for running tests.
+
+### How to Run Tests
+
+1. Install all dependencies:
+    ```bash
+    npm install
+    ```
+2. Run tests:
+    ```bash
+    npm test
+    ```
+    This will execute all test files (in `src/__tests__/`).
+
+### How It Works
+
+- The test environment spins up an in-memory MongoDB instance before running tests and tears it down afterward.
+- API endpoints are tested using Supertest to simulate HTTP requests and check responses.
+- No manual database setup is needed for testing.
+
+### Example Test File
+
+```js
+// src/__tests__/vendors.test.js
+const request = require('supertest');
+const app = require('../app');
+
+describe('Vendor API', () => {
+  it('POST /api/vendors - should create a vendor', async () => {
+    const vendorData = {
+      name: 'Test Vendor',
+      service: 'Photography'
+    };
+    const res = await request(app)
+      .post('/api/vendors')
+      .send(vendorData);
+    expect(res.statusCode).toBe(201);
+    expect(res.body.name).toBe(vendorData.name);
+    vendorId = res.body._id;
+  });
+});
+```
+
+For more details, see the test files in the codebase.
 
 ---
 
