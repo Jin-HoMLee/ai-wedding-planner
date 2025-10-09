@@ -56,6 +56,6 @@ ai-wedding-planner/             # Repository root
 │   └── server.js               # App/server entry point (could also be index.js)
 ├── .gitignore                  # Top-level git ignore rules
 ├── LICENSE                     # Project license
-├── project-structure           # Project structure documentation
+├── PROJECT_STRUCTURE.md        # Project structure documentation
 ├── README.md                   # Project overview and setup
 ```
