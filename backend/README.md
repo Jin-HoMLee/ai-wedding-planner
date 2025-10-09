@@ -98,14 +98,40 @@ Typical variables include:
 
 ---
 
+
+
 ## API Endpoints
 
-Sample endpoints (see `src/routes/`):
-- `GET /api/vendors` – List vendors
-- `POST /api/budgets` – Create new budget
-- `GET /api/guests` – List guests
-- `POST /api/tasks` – Create new task
+The backend provides API routes for managing wedding vendors, budgets, guests, and tasks. **Currently, only sample GET endpoints are implemented for each resource.** These endpoints return example JSON responses and serve as placeholders for future CRUD functionality.
 
+Sample endpoints (see `src/routes/`):
+
+- **Vendors**
+   - `GET /api/vendors` – Returns a sample list of vendors
+
+- **Budgets**
+   - `GET /api/budgets` – Returns a sample list of budgets
+
+- **Guests**
+   - `GET /api/guests` – Returns a sample list of guests
+
+- **Tasks**
+   - `GET /api/tasks` – Returns a sample list of tasks
+
+> **Note:** Full CRUD operations (POST, PUT, DELETE, etc.) will be added in future updates.
+
+#### How to Test Sample Endpoints
+
+You can test the sample GET endpoints by:
+
+- Visiting the endpoint in your browser, e.g. `http://localhost:4000/api/vendors`
+- Running a curl command in your terminal, e.g. `curl http://localhost:4000/api/vendors`
+- Using Postman or Insomnia to send a GET request to the endpoint
+
+You should receive a JSON response with a sample message, e.g.:
+```
+{ "message": "List of vendors (example)" }
+```
 
 ### Health Check Endpoint
 
