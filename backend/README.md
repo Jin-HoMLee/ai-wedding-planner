@@ -142,13 +142,25 @@ Sample endpoints (see `src/routes/`):
    - `DELETE /api/vendors/:id` – Delete a vendor by ID
 
 - **Budgets**
-   - `GET /api/budgets` – Returns a sample list of budgets
+   - `GET /api/budgets` – Get all budgets
+   - `GET /api/budgets/:id` – Get a budget by ID
+   - `POST /api/budgets` – Create a new budget
+   - `PUT /api/budgets/:id` – Update a budget by ID
+   - `DELETE /api/budgets/:id` – Delete a budget by ID
 
 - **Guests**
-   - `GET /api/guests` – Returns a sample list of guests
+   - `GET /api/guests` – Get all guests
+   - `GET /api/guests/:id` – Get a guest by ID
+   - `POST /api/guests` – Create a new guest
+   - `PUT /api/guests/:id` – Update a guest by ID
+   - `DELETE /api/guests/:id` – Delete a guest by ID
 
 - **Tasks**
-   - `GET /api/tasks` – Returns a sample list of tasks
+   - `GET /api/tasks` – Get all tasks
+   - `GET /api/tasks/:id` – Get a task by ID
+   - `POST /api/tasks` – Create a new task
+   - `PUT /api/tasks/:id` – Update a task by ID
+   - `DELETE /api/tasks/:id` – Delete a task by ID
 
 > **Note:** Full CRUD operations (POST, PUT, DELETE, etc.) will be added in future updates.
 
