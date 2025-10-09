@@ -19,12 +19,14 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 backend/
 ├── src/
 │   ├── models/        # Mongoose schemas (Vendor, Budget, Guest, Task)
-│   ├── routes/        # Express routers for each resource
+│   ├── routes/
+│   │   ├── health.js  # Health check endpoint (GET /api/health)
+│   │   └── ...        # Other Express routers for each resource
 │   ├── controllers/   # Business logic for API endpoints
-│   ├── app.js         # Main Express app setup
-│   ├── db.js          # MongoDB connection logic
+│   ├── app.js         # Main Express app setup (middleware, routes, exports app)
+│   ├── db.js          # MongoDB connection logic (initiates DB connection)
 │   └── config/        # Configuration files (default.json)
-├── server.js          # Entry point for backend server
+├── server.js          # Entry point for backend server (imports app, starts server)
 ├── package.json       # Backend dependencies and scripts
 ├── .env.example       # Example backend environment variables
 ├── .env               # Backend environment variables
@@ -99,11 +101,17 @@ Typical variables include:
 ## API Endpoints
 
 Sample endpoints (see `src/routes/`):
-- `GET /api/health` – Health check
 - `GET /api/vendors` – List vendors
 - `POST /api/budgets` – Create new budget
 - `GET /api/guests` – List guests
 - `POST /api/tasks` – Create new task
+
+### Health Check Endpoint
+
+`GET /api/health`
+
+Returns `{ status: 'OK' }` if the backend server is running.
+Useful for monitoring, deployment checks, and automated uptime verification.
 
 Detailed documentation for all endpoints can be found in the source files or will be provided in future updates.
 
