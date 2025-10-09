@@ -2,8 +2,17 @@ ai-wedding-planner/             # Repository root
 ├── README.md                   # Project overview and setup
 ├── .env.example                # Top-level env template (shared/global)
 ├── /frontend/                  # React app (previously /src and /public)
+│   ├── node_modules            # gitignored (created by npm install)
+│   ├── README.md               # Frontend-specific docs/setup
+│   ├── package-lock.json       # Auto-generated lockfile for frontend
 │   ├── package.json            # Frontend dependencies and scripts
 │   ├── public/                 # Static assets (favicon, index.html, etc.)
+│   │   ├── favicon.ico         # Browser tab icon
+│   │   ├── index.html          # Main HTML template for React app
+│   │   ├── logo192.png         # 192x192 PWA icon for app manifest
+│   │   ├── logo512.png         # 512x512 PWA icon for app manifest
+│   │   ├── manifest.json       # PWA configuration and metadata
+│   │   └── robots.txt          # Web crawler instructions for SEO
 │   ├── src/
 │   │   ├── components/
 │   │   ├── pages/
