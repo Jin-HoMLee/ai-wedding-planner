@@ -55,6 +55,7 @@ The backend uses MongoDB for data storage, with connection logic handled in `src
 No manual action is needed beyond setting the correct URI in `.env`.
 
 ---
+
 ## Setup
 
 1. **Install dependencies:**
@@ -77,6 +78,32 @@ No manual action is needed beyond setting the correct URI in `.env`.
    npm run dev
    ```
    This uses nodemon (if configured) to restart the server when you make code changes.
+
+---
+
+## Postman Quick Start
+
+Postman is a popular tool for testing and interacting with your API endpoints.
+
+**Setup:**
+1. Download and install Postman from [https://www.postman.com/downloads/](https://www.postman.com/downloads/)
+2. Open Postman and create a new request (you can click the "+" tab).
+3. Set the request type (GET, POST, PUT, DELETE) and enter your API endpoint URL (e.g., `http://localhost:4000/api/vendors`).
+4. For POST and PUT requests, select the "Body" tab, choose "raw" and "JSON", and enter your request data.
+5. Click "Send" to see the response from your backend.
+
+**Example:**
+- To create a new vendor, set the request to POST and use the URL `http://localhost:4000/api/vendors`. In the body, enter:
+  ```json
+  {
+    "name": "Florist Co",
+    "service": "Florist",
+    "contact": "123-456",
+    "email": "florist@example.com"
+  }
+  ```
+
+Postman will display the response from your API, making it easy to test and debug your backend endpoints.
 
 ---
 
