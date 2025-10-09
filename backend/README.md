@@ -23,6 +23,8 @@ backend/
 │   │   ├── health.js  # Health check endpoint (GET /api/health)
 │   │   └── ...        # Other Express routers for each resource
 │   ├── controllers/   # Business logic for API endpoints
+│   ├── middleware/
+│   │   └── validation.js # Express-validator middleware for request validation
 │   ├── app.js         # Main Express app setup (middleware, routes, exports app)
 │   ├── db.js          # MongoDB connection logic (initiates DB connection)
 │   └── config/        # Configuration files (default.json)
@@ -130,10 +132,53 @@ Typical variables include:
 
 ## API Endpoints
 
+### Request Validation
+
+All POST and PUT requests for budgets, guests, tasks, and vendors use validation middleware powered by [express-validator](https://express-validator.github.io/). This ensures incoming data matches the expected schema and constraints before reaching the database.
+
+Validation errors return a 400 response with details about the failed fields.
+
+#### Validation Rules
+
+- **Vendor**
+   - `name`: string, required, 2-50 chars, trimmed
+   - `service`: string, required, trimmed
+   - `contact`: string, optional, trimmed
+   - `email`: string, optional, must be valid email, normalized
+   - `notes`: string, optional, max 200 chars, trimmed
+
+- **Budget**
+   - `category`: string, required, trimmed
+   - `amount`: number, required, min 0
+   - `notes`: string, optional, max 200 chars, trimmed
+
+- **Guest**
+   - `name`: string, required, 2-50 chars, trimmed
+   - `email`: string, optional, must be valid email, normalized
+   - `phone`: string, optional, trimmed
+   - `rsvp`: boolean, optional
+   - `notes`: string, optional, max 200 chars, trimmed
+
+- **Task**
+   - `title`: string, required, 2-100 chars, trimmed
+   - `completed`: boolean, optional
+   - `dueDate`: ISO8601 date, optional
+   - `notes`: string, optional, max 200 chars, trimmed
+
+Validation is handled by middleware in each route file (see `src/routes/`). Example usage:
+
+```js
+router.post('/', validationRules, handleValidationErrors, async (req, res) => {
+   // ...
+});
+```
+
+See each route file for the full list of rules and error handling.
+
 ### Model Schemas
 
 
-Below are the main data models used in the backend. All fields are stored in MongoDB via Mongoose. Validation and trimming are applied as described below.
+Below are the main data models used in the backend. All fields are stored in MongoDB via Mongoose. Validation and trimming are applied as described below (Mongoose schema validation). 
 
 #### Vendor
 ```
