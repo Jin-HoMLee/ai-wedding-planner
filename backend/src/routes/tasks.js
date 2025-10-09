@@ -1,8 +1,27 @@
 const express = require('express');
+const { body } = require('express-validator');
+const { handleValidationErrors } = require('../middleware/validation');
 const Task = require('../models/Task');
 const router = express.Router();
 
-// Get all tasks
+const taskValidationRules = [
+  body('title')
+    .isString().withMessage('Title must be a string')
+    .isLength({ min: 2, max: 100 }).withMessage('Title must be 2-100 characters')
+    .trim(),
+  body('completed')
+    .optional()
+    .isBoolean().withMessage('Completed must be true or false'),
+  body('dueDate')
+    .optional()
+    .isISO8601().withMessage('Due date must be a valid ISO8601 date'),
+  body('notes')
+    .optional()
+    .isString().withMessage('Notes must be a string')
+    .isLength({ max: 200 }).withMessage('Notes must be at most 200 characters')
+    .trim()
+];
+
 router.get('/', async (req, res) => {
   try {
     const tasks = await Task.find();
@@ -12,7 +31,6 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get a task by ID
 router.get('/:id', async (req, res) => {
   try {
     const task = await Task.findById(req.params.id);
@@ -23,8 +41,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create a new task
-router.post('/', async (req, res) => {
+router.post('/', taskValidationRules, handleValidationErrors, async (req, res) => {
   try {
     const task = new Task(req.body);
     const savedTask = await task.save();
@@ -34,10 +51,13 @@ router.post('/', async (req, res) => {
   }
 });
 
-// Update a task
-router.put('/:id', async (req, res) => {
+router.put('/:id', taskValidationRules, handleValidationErrors, async (req, res) => {
   try {
-    const updatedTask = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const updatedTask = await Task.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
     if (!updatedTask) return res.status(404).json({ error: 'Task not found' });
     res.json(updatedTask);
   } catch (err) {
@@ -45,7 +65,6 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Delete a task
 router.delete('/:id', async (req, res) => {
   try {
     const deletedTask = await Task.findByIdAndDelete(req.params.id);

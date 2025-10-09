@@ -1,10 +1,36 @@
-
 // backend/src/routes/vendors.js
 // Defines API routes for managing wedding vendors.
 
 const express = require('express');
+const { body } = require('express-validator');
+const { handleValidationErrors } = require('../middleware/validation');
 const Vendor = require('../models/Vendor');
 const router = express.Router();
+
+// Validation rules for creating/updating a vendor
+const vendorValidationRules = [
+  body('name')
+    .isString().withMessage('Name must be a string')
+    .isLength({ min: 2, max: 50 }).withMessage('Name must be 2-50 characters')
+    .trim(),
+  body('service')
+    .isString().withMessage('Service must be a string')
+    .notEmpty().withMessage('Service is required')
+    .trim(),
+  body('contact')
+    .optional()
+    .isString().withMessage('Contact must be a string')
+    .trim(),
+  body('email')
+    .optional()
+    .isEmail().withMessage('Email must be a valid email address')
+    .normalizeEmail(),
+  body('notes')
+    .optional()
+    .isString().withMessage('Notes must be a string')
+    .isLength({ max: 200 }).withMessage('Notes must be at most 200 characters')
+    .trim()
+];
 
 // GET /api/vendors
 // Retrieve all vendors from the database
@@ -31,7 +57,7 @@ router.get('/:id', async (req, res) => {
 
 // POST /api/vendors
 // Create a new vendor with data from the request body
-router.post('/', async (req, res) => {
+router.post('/', vendorValidationRules, handleValidationErrors, async (req, res) => {
   try {
     const vendor = new Vendor(req.body);
     const savedVendor = await vendor.save();
@@ -43,7 +69,7 @@ router.post('/', async (req, res) => {
 
 // PUT /api/vendors/:id
 // Update an existing vendor by its ID
-router.put('/:id', async (req, res) => {
+router.put('/:id', vendorValidationRules, handleValidationErrors, async (req, res) => {
   try {
     const updatedVendor = await Vendor.findByIdAndUpdate(
       req.params.id,

@@ -1,6 +1,23 @@
 const express = require('express');
+const { body } = require('express-validator');
+const { handleValidationErrors } = require('../middleware/validation');
 const Budget = require('../models/Budget');
 const router = express.Router();
+
+const budgetValidationRules = [
+  body('category')
+    .isString().withMessage('Category must be a string')
+    .notEmpty().withMessage('Category is required')
+    .trim(),
+  body('amount')
+    .isNumeric().withMessage('Amount must be a number')
+    .isFloat({ min: 0 }).withMessage('Amount must be zero or greater'),
+  body('notes')
+    .optional()
+    .isString().withMessage('Notes must be a string')
+    .isLength({ max: 200 }).withMessage('Notes must be at most 200 characters')
+    .trim()
+];
 
 // Get all budgets
 router.get('/', async (req, res) => {
@@ -24,7 +41,7 @@ router.get('/:id', async (req, res) => {
 });
 
 // Create a new budget
-router.post('/', async (req, res) => {
+router.post('/', budgetValidationRules, handleValidationErrors, async (req, res) => {
   try {
     const budget = new Budget(req.body);
     const savedBudget = await budget.save();
@@ -35,9 +52,13 @@ router.post('/', async (req, res) => {
 });
 
 // Update a budget
-router.put('/:id', async (req, res) => {
+router.put('/:id', budgetValidationRules, handleValidationErrors, async (req, res) => {
   try {
-    const updatedBudget = await Budget.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
+    const updatedBudget = await Budget.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
     if (!updatedBudget) return res.status(404).json({ error: 'Budget not found' });
     res.json(updatedBudget);
   } catch (err) {
