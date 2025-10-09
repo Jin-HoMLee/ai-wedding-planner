@@ -1,0 +1,20 @@
+ai-wedding-planner/
+├── README.md
+├── package.json
+├── .env.example
+├── /public
+├── /src
+│   ├── /components
+│   ├── /pages
+│   ├── /utils
+│   ├── /api
+│   └── App.js
+├── /server
+│   ├── /controllers
+│   ├── /models
+│   ├── /routes
+│   └── server.js
+├── /db
+│   └── schema.js
+└── /config
+    └── default.json
