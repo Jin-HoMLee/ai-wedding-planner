@@ -6,7 +6,9 @@ let mongoServer;
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  await mongoose.connect(uri);
+  process.env.MONGO_URI = uri; // Set env before app/db loads
+  await mongoose.disconnect();  // Disconnect any previous connection
+  await mongoose.connect(uri);  // Connect to the in-memory server
 });
 
 afterAll(async () => {
