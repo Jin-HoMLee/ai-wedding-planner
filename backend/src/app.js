@@ -14,7 +14,7 @@ const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
 
 // Load environment variables from .env into process.env
-dotenv.config();
+dotenv.config({ quiet: true });
 
 // Initiate DB connection
 require('./db'); 
