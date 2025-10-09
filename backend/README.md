@@ -33,6 +33,26 @@ backend/
 
 ---
 
+
+## Database Setup
+
+The backend uses MongoDB for data storage, with connection logic handled in `src/db.js` using Mongoose.
+
+1. **Configure your MongoDB URI:**
+   - Set the `MONGODB_URI` variable in your `.env` file to your MongoDB connection string (local or cloud).
+   - Example for local development:
+     ```
+     MONGODB_URI=mongodb://localhost:27017/ai-wedding-planner
+     ```
+
+2. **Connection logic:**
+   - The file `src/db.js` loads the URI from `.env` and connects to MongoDB when the app starts.
+   - On successful connection, you’ll see `Connected to MongoDB` in your terminal.
+   - If the connection fails, an error message will be printed.
+
+No manual action is needed beyond setting the correct URI in `.env`.
+
+---
 ## Setup
 
 1. **Install dependencies:**
