@@ -1,20 +1,39 @@
-ai-wedding-planner/
-├── README.md
-├── package.json
-├── .env.example
-├── /public
-├── /src
-│   ├── /components
-│   ├── /pages
-│   ├── /utils
-│   ├── /api
-│   └── App.js
-├── /server
-│   ├── /controllers
-│   ├── /models
-│   ├── /routes
-│   └── server.js
-├── /db
-│   └── schema.js
-└── /config
-    └── default.json
+ai-wedding-planner/             # Repository root
+├── README.md                   # Project overview and setup
+├── .env.example                # Top-level env template (shared/global)
+├── /frontend/                  # React app (previously /src and /public)
+│   ├── package.json            # Frontend dependencies and scripts
+│   ├── public/                 # Static assets (favicon, index.html, etc.)
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── utils/
+│   │   ├── api/                # Frontend API helpers (calls to backend)
+│   │   └── App.js
+│   └── .env.example            # Example env vars for frontend (API URLs etc.)
+├── /backend/                   # Node/Express API
+│   ├── package.json            # Backend dependencies and scripts
+│   ├── README.md               # Backend-specific docs/setup
+│   ├── .env                    # Backend secrets (not checked in)
+│   ├── .env.example            # Backend env template
+│   ├── src/
+│   │   ├── models/
+│   │   │   ├── Vendor.js
+│   │   │   ├── Budget.js
+│   │   │   ├── Guest.js
+│   │   │   └── Task.js
+│   │   ├── routes/
+│   │   │   ├── vendors.js
+│   │   │   ├── budgets.js
+│   │   │   ├── guests.js
+│   │   │   └── tasks.js
+│   │   ├── controllers/
+│   │   │   ├── vendorController.js
+│   │   │   ├── budgetController.js
+│   │   │   ├── guestController.js
+│   │   │   └── taskController.js
+│   │   ├── app.js              # Express app setup
+│   │   ├── db.js               # MongoDB connection
+│   │   └── config/
+│   │       └── default.json    # Backend config (if needed)
+│   └── server.js               # App/server entry point (could also be index.js)
