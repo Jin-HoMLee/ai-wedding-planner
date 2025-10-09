@@ -49,6 +49,12 @@ backend/
    ```
    The server will start on the port specified in `.env`.
 
+   Or, for automatic restarts during development, use:
+   ```bash
+   npm run dev
+   ```
+   This uses nodemon (if configured) to restart the server when you make code changes.
+
 ---
 
 ## Environment Variables
