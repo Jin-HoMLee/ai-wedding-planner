@@ -24,10 +24,10 @@ backend/
 │   │   ├── guests.test.js
 │   │   ├── tasks.test.js
 │   │   └── vendors.test.js
-│   ├── config/
-│   │   ├── default.json    # Backend config 
-│   │   ├── production.json # Production config
-│   │   └── test.json       # Test config
+├── config/
+│   ├── default.json    # Backend config (supports env placeholders)
+│   ├── production.json # Production config
+│   └── test.json       # Test config
 │   ├── controllers/   # Business logic for API endpoints
 │   │   ├── vendorController.js
 │   │   ├── budgetController.js
@@ -66,19 +66,47 @@ backend/
 
 The backend uses MongoDB for data storage, with connection logic handled in `src/db.js` using Mongoose.
 
-1. **Configure your MongoDB URI:**
-   - Set the `MONGODB_URI` variable in your `.env` file to your MongoDB connection string (local or cloud).
-   - Example for local development:
-     ```
-     MONGODB_URI=mongodb://localhost:27017/ai-wedding-planner
-     ```
+### Configuration
 
-2. **Connection logic:**
-   - The file `src/db.js` loads the URI from `.env` and connects to MongoDB when the app starts.
-   - On successful connection, you’ll see `Connected to MongoDB` in your terminal.
-   - If the connection fails, an error message will be printed.
+MongoDB connection and other settings are managed using the [config](https://www.npmjs.com/package/config) package. Config files are located in the `config/` directory at the project root (not inside `src/`).
 
-No manual action is needed beyond setting the correct URI in `.env`.
+**Example: `config/default.json`**
+```json
+{
+   "mongoURI": "mongodb://localhost:27017/ai-wedding-planner",
+   "port": 5000
+}
+```
+
+You can use environment variable placeholders in your config, e.g.:
+```json
+{
+   "mongoURI": "mongodb+srv://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}/${MONGODB_DBNAME}?retryWrites=true&w=majority"
+}
+```
+
+If you use placeholders, be sure to set the corresponding variables in your `.env` file:
+```
+MONGODB_USER=youruser
+MONGODB_PASS=yourpass
+MONGODB_HOST=yourhost
+MONGODB_DBNAME=yourdbname
+```
+
+The backend will automatically replace these placeholders at runtime.
+
+**No manual action is needed beyond setting the correct values in your config and .env files.**
+
+
+#### Where the Config Package Is Used
+
+The [config](https://www.npmjs.com/package/config) package is used to load configuration values in the following files:
+
+- `src/db.js`: Loads the MongoDB connection URI and other DB-related config values.
+- `server.js`: Loads the port and other server-level config values.
+- Any other file that requires project configuration (e.g., for secrets, API prefixes, etc.).
+
+You can use `const config = require('config')` in any file to access values from your config files.
 
 ---
 
@@ -137,10 +165,34 @@ Postman will display the response from your API, making it easy to test and debu
 
 See `.env.example` for all available environment variables.
 
-Typical variables include:
-- `PORT`: Port for Express server (e.g., 4000)
-- `MONGODB_URI`: Connection string for MongoDB
+If your `config/default.json` uses environment variable placeholders (e.g., `${MONGODB_USER}`), you must set those variables in your `.env` file. Typical variables include:
+
+- `MONGODB_USER`: MongoDB username (if using a connection string with authentication)
+- `MONGODB_PASS`: MongoDB password
+- `MONGODB_HOST`: MongoDB host (e.g., localhost or a cloud host)
+- `MONGODB_DBNAME`: MongoDB database name
+- `PORT`: Port for Express server (can also be set in config)
 - `JWT_SECRET`: Secret key for authentication (if applicable)
+
+**Example `.env` file:**
+```
+MONGODB_USER=youruser
+MONGODB_PASS=yourpass
+MONGODB_HOST=localhost
+MONGODB_DBNAME=ai-wedding-planner
+PORT=4000
+```
+
+These variables will be automatically injected into your config at runtime. Always copy `.env.example` to `.env` and fill in your actual values.
+
+### Where Environment Variables Are Used
+
+Environment variables are accessed in the following files:
+
+- `src/db.js`: Loads MongoDB connection details from config, which may use environment variable placeholders (e.g., `${MONGODB_USER}`) that are filled from `.env`.
+- Any other code that references `process.env` or uses config values with placeholders.
+
+The config package automatically injects environment variables from `.env` into your config files at runtime.
 
 ---
 
