@@ -1,5 +1,5 @@
 {
-  "mongoURI": "mongodb+srv://username:password@cluster0.mongodb.net/ai-wedding-planner-prod",
+  "mongoURI": "mongodb+srv://${MONGODB_USER}:${MONGODB_PASS}@${MONGODB_HOST}/${MONGODB_DBNAME}",
   "port": 80,
   "jwtSecret": "useARealSecretForProduction",
   "api": {
