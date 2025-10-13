@@ -4,7 +4,6 @@
 
 // Import necessary modules
 const express = require('express'); // Express framework for building APIs
-const dotenv = require('dotenv');   // Loads environment variables from .env file
 
 // Import route handlers
 const healthRouter = require('./routes/health'); // Health check route
@@ -12,9 +11,6 @@ const vendorsRouter = require('./routes/vendors'); // Vendors route
 const budgetsRouter = require('./routes/budgets'); // Budgets route
 const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
-
-// Load environment variables from .env into process.env
-dotenv.config({ quiet: true });
 
 // Initiate DB connection
 require('./db'); 
