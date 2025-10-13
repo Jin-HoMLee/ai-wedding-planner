@@ -3,13 +3,17 @@
 
 // Import Mongoose (MongoDB ODM) and dotenv for environment variables
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
+const config = require('config'); // Import config package to manage configuration
+// const dotenv = require('dotenv');
 
 // Load environment variables from .env file
-dotenv.config({ quiet: true });
+// dotenv.config({ quiet: true });
 
 // Get the MongoDB connection URI from environment variables
-const mongoURI = process.env.MONGODB_URI;
+// const mongoURI = process.env.MONGODB_URI;
+
+// Use config package to get MongoDB URI from configuration files
+const mongoURI = config.get('mongoURI');
 
 // Connect to MongoDB using Mongoose
 mongoose.connect(mongoURI)
