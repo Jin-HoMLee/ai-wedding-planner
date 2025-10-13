@@ -4,10 +4,11 @@
 
 // Import the Express app instance (configured in src/app.js)
 const app = require('./src/app');
+const config = require('config');
 
 // Define the port to listen on
 // Uses environment variable PORT if set, otherwise defaults to 4000
-const PORT = process.env.PORT || 4000;
+const PORT = config.get('port');
 
 // Start the server and begin listening for incoming HTTP requests
 // The callback runs only after the server is successfully listening
