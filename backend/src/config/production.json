@@ -1,0 +1,8 @@
+{
+  "mongoURI": "mongodb+srv://username:password@cluster0.mongodb.net/ai-wedding-planner-prod",
+  "port": 80,
+  "jwtSecret": "useARealSecretForProduction",
+  "api": {
+    "prefix": "/api"
+  }
+}
