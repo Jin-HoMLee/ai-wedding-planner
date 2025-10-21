@@ -5,11 +5,26 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 ## Table of Contents
 
 - [Project Structure](#project-structure)
+- [Database Setup](#database-setup)
+   - [Configuration](#configuration)
+   - [Where the Config Package Is Used](#where-the-config-package-is-used)
 - [Setup](#setup)
+- [Postman Quick Start](#postman-quick-start)
 - [Environment Variables](#environment-variables)
+   - [Where Environment Variables Are Used](#where-environment-variables-are-used)
 - [Scripts](#scripts)
+- [Testing](#testing)
+   - [How to Run Tests](#how-to-run-tests)
+   - [How It Works](#how-it-works)
+   - [Example Test File](#example-test-file)
 - [API Endpoints](#api-endpoints)
+   - [Request Validation](#request-validation)
+   - [Validation Rules](#validation-rules)
+   - [Model Schemas](#model-schemas)
+   - [How to Test API Endpoints](#how-to-test-api-endpoints)
+   - [Health Check Endpoint](#health-check-endpoint)
 - [Contributing](#contributing)
+- [License](#license)
 
 ---
 
