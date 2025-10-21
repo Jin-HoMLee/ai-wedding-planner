@@ -403,6 +403,8 @@ Sample endpoints (see `src/routes/`):
 
 You can test any resource endpoint (vendors, budgets, guests, tasks) using your browser, curl, or API tools like Postman/Insomnia.
 
+For a quick start guide to using Postman, see the [Postman Quick Start](#postman-quick-start) section above.
+
 **Base URL (Development):**
 - The backend server runs on the port specified in your config (`config/default.json`). By default, this is usually `http://localhost:5000` (development). If you want to use a different port, update the value in your config file.
 
