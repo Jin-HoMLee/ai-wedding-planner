@@ -140,12 +140,14 @@ You can use `const config = require('config')` in any file to access values from
    ```bash
    npm start
    ```
-   The server will start on the port specified in your config file (`config/default.json` for development, `config/production.json` for production). If you want to use a different port, update the value in your config file, not in `.env`.
+   The server will start on the port specified in your config file (`config/production.json` for production). If you want to use a different port, update the value in your config file.
 
    Or, for automatic restarts during development, use:
    ```bash
    npm run dev
    ```
+   The server will start on the port specified in your config file (`config/default.json` for development). If you want to use a different port, update the value in your config file.
+   
    This uses nodemon (if configured) to restart the server when you make code changes.
 
 ---
