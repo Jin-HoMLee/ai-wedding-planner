@@ -89,7 +89,7 @@ MongoDB connection and other settings are managed using the [config](https://www
 ```json
 {
    "mongoURI": "mongodb://localhost:27017/ai-wedding-planner",
-   "port": 5000
+   "port": 5050
 }
 ```
 
@@ -406,7 +406,7 @@ You can test any resource endpoint (vendors, budgets, guests, tasks) using your 
 For a quick start guide to using Postman, see the [Postman Quick Start](#postman-quick-start) section above.
 
 **Base URL (Development):**
-- The backend server runs on the port specified in your config (`config/default.json`). By default, this is usually `http://localhost:5000` (development). If you want to use a different port, update the value in your config file.
+- The backend server runs on the port specified in your config (`config/default.json`). By default, this is now `http://localhost:5050` (development). If you want to use a different port, update the value in your config file.
 
 **Base URL (Production):**
 - In production, the server uses the port and host specified in your `config/production.json` (and your deployment environment). For example, if you deploy to a cloud provider or a remote server, your base URL might be `https://your-domain.com` or `http://<production-ip>:<PORT>`, where `<PORT>` is set in `config/production.json`.
@@ -417,16 +417,16 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 #### Development Example (localhost)
 
 - **GET all items**
-   - Browser: `http://localhost:5000/api/<resource>`
-   - Terminal: `curl http://localhost:5000/api/<resource>`
+   - Browser: `http://localhost:5050/api/<resource>`
+   - Terminal: `curl http://localhost:5050/api/<resource>`
 
 - **GET a single item by ID**
-   - Terminal: `curl http://localhost:5000/api/<resource>/<id>`
+   - Terminal: `curl http://localhost:5050/api/<resource>/<id>`
 
 - **Create a new item (POST)**
    - Terminal:
       ```sh
-      curl -X POST http://localhost:5000/api/<resource> \
+      curl -X POST http://localhost:5050/api/<resource> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -434,7 +434,7 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 - **Update an item (PUT)**
    - Terminal:
       ```sh
-      curl -X PUT http://localhost:5000/api/<resource>/<id> \
+      curl -X PUT http://localhost:5050/api/<resource>/<id> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -442,7 +442,7 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 - **Delete an item (DELETE)**
    - Terminal:
       ```sh
-      curl -X DELETE http://localhost:5000/api/<resource>/<id>
+      curl -X DELETE http://localhost:5050/api/<resource>/<id>
       ```
 
 #### Production Example
@@ -491,8 +491,8 @@ Useful for monitoring, deployment checks, and automated uptime verification.
 
 You can test the health check endpoint by:
 
-- Visiting `http://localhost:4000/api/health` in your browser
-- Running `curl http://localhost:4000/api/health` in your terminal
+- Visiting `http://localhost:5050/api/health` in your browser
+- Running `curl http://localhost:5050/api/health` in your terminal
 - Using Postman or Insomnia to send a GET request to `/api/health`
 
 You should receive a response:
