@@ -411,8 +411,11 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 - The backend server runs on the port specified in your config (`config/default.json`). By default, this is now `http://localhost:5050` (development). If you want to use a different port, update the value in your config file.
 
 **Base URL (Production):**
-- In production, the server uses the port and host specified in your `config/production.json` (and your deployment environment). For example, if you deploy to a cloud provider or a remote server, your base URL might be `https://your-domain.com` or `http://<production-ip>:<PORT>`, where `<PORT>` is set in `config/production.json`.
-- Make sure your production config and deployment environment expose the correct port and domain. You may need to update firewall rules or cloud provider settings to allow external access.
+In production, the server uses the port and host specified in your `config/production.json` (and your deployment environment). For example, if you deploy to a cloud provider or a remote server, your base URL might be `https://your-domain.com` or `http://<production-ip>:<PORT>`, where `<PORT>` is set in `config/production.json`.
+
+**Note:** At the moment, our production setup only uses `http://localhost:80` (local machine). Update to your public domain or remote IP after deploying to a server.
+
+Make sure your production config and deployment environment expose the correct port and domain. You may need to update firewall rules or cloud provider settings to allow external access.
 
 **Examples:**
 
@@ -450,16 +453,16 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 #### Production Example
 
 - **GET all items**
-   - Browser: `https://your-domain.com/api/<resource>`
-   - Terminal: `curl https://your-domain.com/api/<resource>`
+   - Browser: `http://localhost:80/api/<resource>`
+   - Terminal: `curl http://localhost:80/api/<resource>`
 
 - **GET a single item by ID**
-   - Terminal: `curl https://your-domain.com/api/<resource>/<id>`
+   - Terminal: `curl http://localhost:80/api/<resource>/<id>`
 
 - **Create a new item (POST)**
    - Terminal:
       ```sh
-      curl -X POST https://your-domain.com/api/<resource> \
+      curl -X POST http://localhost:80/api/<resource> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -467,7 +470,7 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 - **Update an item (PUT)**
    - Terminal:
       ```sh
-      curl -X PUT https://your-domain.com/api/<resource>/<id> \
+      curl -X PUT http://localhost:80/api/<resource>/<id> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -475,10 +478,10 @@ For a quick start guide to using Postman, see the [Postman Quick Start](#postman
 - **Delete an item (DELETE)**
    - Terminal:
       ```sh
-      curl -X DELETE https://your-domain.com/api/<resource>/<id>
+      curl -X DELETE http://localhost:80/api/<resource>/<id>
       ```
 
-Replace `<resource>` with `vendors`, `budgets`, `guests`, or `tasks`. For production, replace `your-domain.com` with your actual deployed domain or server IP. Provide appropriate JSON data for POST/PUT requests.
+Replace `<resource>` with `vendors`, `budgets`, `guests`, or `tasks`. For production, use `localhost:80` unless you have configured a public domain or remote server IP. Provide appropriate JSON data for POST/PUT requests.
 
 You should receive JSON responses with the item data or confirmation messages.
 
