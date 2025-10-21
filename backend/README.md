@@ -386,19 +386,30 @@ Sample endpoints (see `src/routes/`):
 
 #### How to Test API Endpoints
 
-You can test any resource endpoint (vendors, budgets, guests, tasks) using your browser, curl, or API tools like Postman/Insomnia:
+You can test any resource endpoint (vendors, budgets, guests, tasks) using your browser, curl, or API tools like Postman/Insomnia.
+
+**Base URL (Development):**
+- The backend server runs on the port specified in your config (`config/default.json`). By default, this is usually `http://localhost:5000` (development). If you want to use a different port, update the value in your config file.
+
+**Base URL (Production):**
+- In production, the server uses the port and host specified in your `config/production.json` (and your deployment environment). For example, if you deploy to a cloud provider or a remote server, your base URL might be `https://your-domain.com` or `http://<production-ip>:<PORT>`, where `<PORT>` is set in `config/production.json`.
+- Make sure your production config and deployment environment expose the correct port and domain. You may need to update firewall rules or cloud provider settings to allow external access.
+
+**Examples:**
+
+#### Development Example (localhost)
 
 - **GET all items**
-   - Browser: `http://localhost:4000/api/<resource>`
-   - Terminal: `curl http://localhost:4000/api/<resource>`
+   - Browser: `http://localhost:5000/api/<resource>`
+   - Terminal: `curl http://localhost:5000/api/<resource>`
 
 - **GET a single item by ID**
-   - Terminal: `curl http://localhost:4000/api/<resource>/<id>`
+   - Terminal: `curl http://localhost:5000/api/<resource>/<id>`
 
 - **Create a new item (POST)**
    - Terminal:
       ```sh
-      curl -X POST http://localhost:4000/api/<resource> \
+      curl -X POST http://localhost:5000/api/<resource> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -406,7 +417,7 @@ You can test any resource endpoint (vendors, budgets, guests, tasks) using your 
 - **Update an item (PUT)**
    - Terminal:
       ```sh
-      curl -X PUT http://localhost:4000/api/<resource>/<id> \
+      curl -X PUT http://localhost:5000/api/<resource>/<id> \
          -H "Content-Type: application/json" \
          -d '{...json data...}'
       ```
@@ -414,10 +425,41 @@ You can test any resource endpoint (vendors, budgets, guests, tasks) using your 
 - **Delete an item (DELETE)**
    - Terminal:
       ```sh
-      curl -X DELETE http://localhost:4000/api/<resource>/<id>
+      curl -X DELETE http://localhost:5000/api/<resource>/<id>
       ```
 
-Replace `<resource>` with `vendors`, `budgets`, `guests`, or `tasks` and provide appropriate JSON data for POST/PUT requests.
+#### Production Example
+
+- **GET all items**
+   - Browser: `https://your-domain.com/api/<resource>`
+   - Terminal: `curl https://your-domain.com/api/<resource>`
+
+- **GET a single item by ID**
+   - Terminal: `curl https://your-domain.com/api/<resource>/<id>`
+
+- **Create a new item (POST)**
+   - Terminal:
+      ```sh
+      curl -X POST https://your-domain.com/api/<resource> \
+         -H "Content-Type: application/json" \
+         -d '{...json data...}'
+      ```
+
+- **Update an item (PUT)**
+   - Terminal:
+      ```sh
+      curl -X PUT https://your-domain.com/api/<resource>/<id> \
+         -H "Content-Type: application/json" \
+         -d '{...json data...}'
+      ```
+
+- **Delete an item (DELETE)**
+   - Terminal:
+      ```sh
+      curl -X DELETE https://your-domain.com/api/<resource>/<id>
+      ```
+
+Replace `<resource>` with `vendors`, `budgets`, `guests`, or `tasks`. For production, replace `your-domain.com` with your actual deployed domain or server IP. Provide appropriate JSON data for POST/PUT requests.
 
 You should receive JSON responses with the item data or confirmation messages.
 
