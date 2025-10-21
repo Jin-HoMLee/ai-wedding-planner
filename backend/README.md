@@ -110,7 +110,30 @@ MONGODB_DBNAME=yourdbname
 
 The backend will automatically replace these placeholders at runtime.
 
-**No manual action is needed beyond setting the correct values in your config and .env files.**
+**How NODE_ENV Selects Config Files**
+
+The [config](https://www.npmjs.com/package/config) package automatically loads the correct config file based on the `NODE_ENV` environment variable:
+
+- If `NODE_ENV=production`, it loads `config/production.json`.
+- If `NODE_ENV=test`, it loads `config/test.json`.
+- If `NODE_ENV=development` or not set, it loads `config/default.json`.
+
+You do not need to manually select config files—just set `NODE_ENV` when starting your server:
+
+```sh
+# Development (default.json)
+npm run dev
+
+# Production (production.json)
+npm start
+# Or manually:
+NODE_ENV=production node server.js
+
+# Test (test.json)
+npm test
+```
+
+This ensures your backend uses the correct settings for each environment.
 
 
 #### Where the Config Package Is Used
