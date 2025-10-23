@@ -4,7 +4,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { handleValidationErrors } = require('../middleware/validation');
-const Vendor = require('../models/Vendor');
+const vendorController = require('../controllers/vendorController');
 const router = express.Router();
 
 // Validation rules for creating/updating a vendor
@@ -33,67 +33,19 @@ const vendorValidationRules = [
 ];
 
 // GET /api/vendors
-// Retrieve all vendors from the database
-router.get('/', async (req, res) => {
-  try {
-    const vendors = await Vendor.find();
-    res.json(vendors);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/', vendorController.getAllVendors);
 
 // GET /api/vendors/:id
-// Retrieve a single vendor by its MongoDB ID
-router.get('/:id', async (req, res) => {
-  try {
-    const vendor = await Vendor.findById(req.params.id);
-    if (!vendor) return res.status(404).json({ error: 'Vendor not found' });
-    res.json(vendor);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/:id', vendorController.getVendorById);
 
 // POST /api/vendors
-// Create a new vendor with data from the request body
-router.post('/', vendorValidationRules, handleValidationErrors, async (req, res) => {
-  try {
-    const vendor = new Vendor(req.body);
-    const savedVendor = await vendor.save();
-    res.status(201).json(savedVendor);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+router.post('/', vendorValidationRules, handleValidationErrors, vendorController.createVendor);
 
 // PUT /api/vendors/:id
-// Update an existing vendor by its ID
-router.put('/:id', vendorValidationRules, handleValidationErrors, async (req, res) => {
-  try {
-    const updatedVendor = await Vendor.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedVendor) return res.status(404).json({ error: 'Vendor not found' });
-    res.json(updatedVendor);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+router.put('/:id', vendorValidationRules, handleValidationErrors, vendorController.updateVendor);
 
 // DELETE /api/vendors/:id
-// Delete a vendor by its ID
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedVendor = await Vendor.findByIdAndDelete(req.params.id);
-    if (!deletedVendor) return res.status(404).json({ error: 'Vendor not found' });
-    res.json({ message: 'Vendor deleted' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.delete('/:id', vendorController.deleteVendor);
 
 // Export the router to be used in app.js
 module.exports = router;

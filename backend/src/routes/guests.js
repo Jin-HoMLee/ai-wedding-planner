@@ -1,7 +1,7 @@
 const express = require('express');
 const { body } = require('express-validator');
 const { handleValidationErrors } = require('../middleware/validation');
-const Guest = require('../models/Guest');
+const guestsController = require('../controllers/guestController');
 const router = express.Router();
 
 const guestValidationRules = [
@@ -27,57 +27,14 @@ const guestValidationRules = [
     .trim()
 ];
 
-router.get('/', async (req, res) => {
-  try {
-    const guests = await Guest.find();
-    res.json(guests);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/', guestsController.getAllGuests);
 
-router.get('/:id', async (req, res) => {
-  try {
-    const guest = await Guest.findById(req.params.id);
-    if (!guest) return res.status(404).json({ error: 'Guest not found' });
-    res.json(guest);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.get('/:id', guestsController.getGuestById);
 
-router.post('/', guestValidationRules, handleValidationErrors, async (req, res) => {
-  try {
-    const guest = new Guest(req.body);
-    const savedGuest = await guest.save();
-    res.status(201).json(savedGuest);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+router.post('/', guestValidationRules, handleValidationErrors, guestsController.createGuest);
 
-router.put('/:id', guestValidationRules, handleValidationErrors, async (req, res) => {
-  try {
-    const updatedGuest = await Guest.findByIdAndUpdate(
-      req.params.id,
-      req.body,
-      { new: true, runValidators: true }
-    );
-    if (!updatedGuest) return res.status(404).json({ error: 'Guest not found' });
-    res.json(updatedGuest);
-  } catch (err) {
-    res.status(400).json({ error: err.message });
-  }
-});
+router.put('/:id', guestValidationRules, handleValidationErrors, guestsController.updateGuest);
 
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedGuest = await Guest.findByIdAndDelete(req.params.id);
-    if (!deletedGuest) return res.status(404).json({ error: 'Guest not found' });
-    res.json({ message: 'Guest deleted' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+router.delete('/:id', guestsController.deleteGuest);
 
 module.exports = router;
