@@ -2,9 +2,11 @@
 
 This is the Node.js/Express backend API for the AI Wedding Planner project.
 
+
 ## Table of Contents
 
 - [Project Structure](#project-structure)
+- [Controllers Structure](#controllers-structure)
 - [Database Setup](#database-setup)
    - [Configuration](#configuration)
    - [Where the Config Package Is Used](#where-the-config-package-is-used)
@@ -29,6 +31,7 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 ---
 
 ## Project Structure
+
 
 ```
 backend/
@@ -73,6 +76,17 @@ backend/
 ├── README.md          # Backend-specific documentation
 └── server.js          # Entry point for backend server (imports app, starts server)
 ```
+
+## Controllers Structure
+
+All business logic for API endpoints is organized in controller files under `src/controllers/`:
+
+- `vendorController.js`: Handles vendor CRUD operations
+- `budgetsController.js`: Handles budget CRUD operations
+- `guestsController.js`: Handles guest CRUD operations
+- `tasksController.js`: Handles task CRUD operations
+
+Each controller exports functions for: get all, get by ID, create, update, and delete. These are used by the corresponding route files in `src/routes/` for clean separation of concerns and easier testing/maintenance.
 
 ---
 
