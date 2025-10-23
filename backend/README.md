@@ -100,15 +100,31 @@ You can use environment variable placeholders in your config, e.g.:
 }
 ```
 
-If you use placeholders, be sure to set the corresponding variables in your `.env` file:
+If you use placeholders in your config files (such as `${MONGODB_USER}`), you must set the corresponding environment variables in your `.env` file. These are required for the backend to connect to MongoDB and other services:
+
+**Required Environment Variables for Contributors**
+
+- `MONGODB_USER`: MongoDB username (if using a connection string with authentication)
+- `MONGODB_PASS`: MongoDB password
+- `MONGODB_HOST`: MongoDB host (e.g., localhost or a cloud host)
+- `MONGODB_DBNAME`: MongoDB database name
+- `JWT_SECRET`: Secret key for authentication (if applicable)
+
+Example `.env` file:
 ```
 MONGODB_USER=youruser
 MONGODB_PASS=yourpass
 MONGODB_HOST=yourhost
 MONGODB_DBNAME=yourdbname
+JWT_SECRET=your_jwt_secret
 ```
 
-The backend will automatically replace these placeholders at runtime.
+**Config Approach**
+
+- All environment-specific settings (MongoDB URI, port, secrets, etc.) are managed in the `config/` directory using the [config](https://www.npmjs.com/package/config) package.
+- Config files (`default.json`, `production.json`, `test.json`) can use environment variable placeholders (e.g., `${MONGODB_USER}`) for sensitive values.
+- Contributors should copy `.env.example` to `.env` and fill in the required values before running the backend.
+- The backend will automatically replace these placeholders at runtime using values from `.env`.
 
 **How NODE_ENV Selects Config Files**
 
@@ -203,27 +219,23 @@ Postman will display the response from your API, making it easy to test and debu
 
 ## Environment Variables
 
+
 See `.env.example` for all available environment variables.
 
-If your `config/default.json` uses environment variable placeholders (e.g., `${MONGODB_USER}`), you must set those variables in your `.env` file. Typical variables include:
+- If your config files use environment variable placeholders (e.g., `${MONGODB_USER}`), you must set those variables in your `.env` file.
+- These variables will be automatically injected into your config at runtime.
+- Always copy `.env.example` to `.env` and fill in your actual values.
+- **Never commit your `.env` file to version control.**
 
-- `MONGODB_USER`: MongoDB username (if using a connection string with authentication)
-- `MONGODB_PASS`: MongoDB password
-- `MONGODB_HOST`: MongoDB host (e.g., localhost or a cloud host)
-- `MONGODB_DBNAME`: MongoDB database name
-- `PORT`: Port for Express server (can also be set in config)
-- `JWT_SECRET`: Secret key for authentication (if applicable)
+**Quick Contributor Checklist**
 
-**Example `.env` file:**
-```
-MONGODB_USER=youruser
-MONGODB_PASS=yourpass
-MONGODB_HOST=localhost
-MONGODB_DBNAME=ai-wedding-planner
-PORT=4000
-```
+- [ ] Install dependencies: `npm install`
+- [ ] Copy `.env.example` to `.env` and fill in all required values
+- [ ] Verify your config files use the correct placeholders for your environment
+- [ ] Start the server with the appropriate script (`npm run dev`, `npm start`, or `npm test`)
+- [ ] If you encounter a port conflict, update the port in your config file or `.env` and restart
+- [ ] Never commit `.env` files or secrets to version control
 
-These variables will be automatically injected into your config at runtime. Always copy `.env.example` to `.env` and fill in your actual values.
 
 ### Where Environment Variables Are Used
 
