@@ -32,6 +32,10 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 
 ```
 backend/
+├── config/
+│   ├── default.json    # Backend config (supports env placeholders)
+│   ├── production.json # Production config
+│   └── test.json       # Test config
 ├── node_modules       # (.gitignore)
 ├── src/
 │   ├── __tests__/     # Automated Jest/Supertest test files
@@ -39,10 +43,6 @@ backend/
 │   │   ├── guests.test.js
 │   │   ├── tasks.test.js
 │   │   └── vendors.test.js
-├── config/
-│   ├── default.json    # Backend config (supports env placeholders)
-│   ├── production.json # Production config
-│   └── test.json       # Test config
 │   ├── controllers/   # Business logic for API endpoints
 │   │   ├── vendorController.js
 │   │   ├── budgetController.js
