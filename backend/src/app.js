@@ -1,6 +1,6 @@
 // backend/src/app.js
-// This file sets up the Express app
-// and exports it for use in other files.
+// This file sets up the Express app and exports it for use in other files.
+// Note: The app does NOT connect to the database directly. DB connection is handled in server.js (for dev/prod) and in test setup (for tests).
 
 // Import necessary modules
 const express = require('express'); // Express framework for building APIs
@@ -11,9 +11,6 @@ const vendorsRouter = require('./routes/vendors'); // Vendors route
 const budgetsRouter = require('./routes/budgets'); // Budgets route
 const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
-
-// Initiate DB connection
-require('./db'); 
 
 // Initialize Express app
 const app = express(); // Creates the main Express application instance

@@ -1,14 +1,17 @@
+// Test setup for isolated, in-memory MongoDB
+// This ensures tests never touch your real database
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
+const connectDB = require('../db');
 
 let mongoServer;
 
 beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const uri = mongoServer.getUri();
-  process.env.MONGO_URI = uri; // Set env before app/db loads
+  process.env.MONGO_URI = uri;  // Set env before app/db loads
   await mongoose.disconnect();  // Disconnect any previous connection
-  await mongoose.connect(uri);  // Connect to the in-memory server
+  await connectDB();            // Use app's DB connection logic (reads MONGO_URI)
 });
 
 afterAll(async () => {

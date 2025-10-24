@@ -9,19 +9,29 @@ const dotenv = require('dotenv');
 // Load environment variables from .env file
 dotenv.config();
 
-// Use config package to get MongoDB URI from configuration files
-let mongoURI = config.get('mongoURI');
+// Export a function to connect to MongoDB
+// This function is called in server.js (for dev/prod) and in test setup (for tests)
+// It ensures the correct URI is used for each environment, including in-memory MongoDB for tests
+async function connectDB() {
+  let mongoURI = config.get('mongoURI');
+  // If the config value is a placeholder, use the env variable directly (for tests)
+  if (mongoURI === '${MONGO_URI}') {
+    mongoURI = process.env.MONGO_URI;
+  } else {
+    // Otherwise, replace placeholders with actual env vars (for dev/prod)
+    mongoURI = mongoURI
+      .replace('${MONGODB_USER}', process.env.MONGODB_USER)
+      .replace('${MONGODB_PASS}', process.env.MONGODB_PASS)
+      .replace('${MONGODB_HOST}', process.env.MONGODB_HOST)
+      .replace('${MONGODB_DBNAME}', process.env.MONGODB_DBNAME);
+  }
+  try {
+    await mongoose.connect(mongoURI);
+    console.log('Connected to MongoDB');
+  } catch (err) {
+    console.error('MongoDB connection error:', err);
+    throw err;
+  }
+}
 
-// Replace placeholders with actual env vars
-mongoURI = mongoURI
-  .replace('${MONGODB_USER}', process.env.MONGODB_USER)
-  .replace('${MONGODB_PASS}', process.env.MONGODB_PASS)
-  .replace('${MONGODB_HOST}', process.env.MONGODB_HOST)
-  .replace('${MONGODB_DBNAME}', process.env.MONGODB_DBNAME);
-
-// Connect to MongoDB using Mongoose
-mongoose.connect(mongoURI)
-// If connection is successful, log a message
-.then(() => console.log('Connected to MongoDB'))
-// If connection fails, log the error
-.catch((err) => console.error('MongoDB connection error:', err));
+module.exports = connectDB;

@@ -336,8 +336,66 @@ For more details, see the test files in the codebase.
 
 ---
 
+## Database Connection Logic & Test Isolation (2025 Update)
 
+### Unified DB Connection Logic
+- The database connection logic is centralized in `src/db.js` as an exported async function `connectDB()`.
+- The Express app (`src/app.js`) does NOT connect to the database directly—this is handled in `server.js` (for production/dev) and in the test setup (for tests).
+- This prevents double connections and ensures the correct URI is always used.
 
+### Test Database Isolation & In-Memory MongoDB
+- All backend tests use an in-memory MongoDB instance (via `mongodb-memory-server`) for full isolation and speed.
+- The test setup (`src/testSetup/setup.js`) starts the in-memory server, sets `process.env.MONGO_URI`, and calls the shared `connectDB()` function to connect using the correct URI.
+- The test config (`config/test.json`) uses `"mongoURI": "${MONGO_URI}"`. The code in `src/db.js` detects this and uses the environment variable directly.
+- This ensures tests never touch your real database and require no manual DB setup.
+
+#### How It Works
+- **Production/Development:** `server.js` calls `connectDB()` before starting the server.
+- **Testing:** The test setup script sets up the in-memory DB and calls `connectDB()` before any tests run.
+
+#### Why This Matters
+- Prevents accidental use of production/dev databases during tests.
+- Ensures all environments (dev, prod, test) use the correct config and connection logic.
+- Makes the codebase easier to maintain and safer for contributors.
+
+#### Example: Test Setup (`src/testSetup/setup.js`)
+```js
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongoose = require('mongoose');
+const connectDB = require('../db');
+
+let mongoServer;
+
+beforeAll(async () => {
+  mongoServer = await MongoMemoryServer.create();
+  const uri = mongoServer.getUri();
+  process.env.MONGO_URI = uri; // Set env before app/db loads
+  await mongoose.disconnect();  // Disconnect any previous connection
+  await connectDB();            // Use app's DB connection logic
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+  await mongoServer.stop();
+});
+```
+
+#### Example: db.js (relevant logic)
+```js
+let mongoURI = config.get('mongoURI');
+if (mongoURI === '${MONGO_URI}') {
+  mongoURI = process.env.MONGO_URI;
+} else {
+  mongoURI = mongoURI
+    .replace('${MONGODB_USER}', process.env.MONGODB_USER)
+    .replace('${MONGODB_PASS}', process.env.MONGODB_PASS)
+    .replace('${MONGODB_HOST}', process.env.MONGODB_HOST)
+    .replace('${MONGODB_DBNAME}', process.env.MONGODB_DBNAME);
+}
+await mongoose.connect(mongoURI);
+```
+
+---
 
 ## API Endpoints
 
