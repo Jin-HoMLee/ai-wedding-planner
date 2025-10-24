@@ -1,7 +1,6 @@
 {
   "mongoURI": "${MONGO_URI}",
   "port": 4000,
-  "jwtSecret": "testSecret",
   "api": {
     "prefix": "/api"
   }

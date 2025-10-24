@@ -1,7 +1,6 @@
 {
   "mongoURI": "mongodb://localhost:27017/ai-wedding-planner",
   "port": 5050,
-  "jwtSecret": "devSecretChangeThis",
   "api": {
     "prefix": "/api"
   }
