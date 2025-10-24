@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const Vendor = require('../models/Vendor');
 
 /**
@@ -32,9 +31,6 @@ exports.getVendorById = async (req, res) => {
  * POST /api/vendors
  */
 exports.createVendor = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const vendor = new Vendor(req.body);
     await vendor.save();
@@ -49,9 +45,6 @@ exports.createVendor = async (req, res) => {
  * PUT /api/vendors/:id
  */
 exports.updateVendor = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const vendor = await Vendor.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).lean();
     if (!vendor) return res.status(404).json({ message: 'Vendor not found' });
