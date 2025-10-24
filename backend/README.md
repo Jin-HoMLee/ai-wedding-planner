@@ -7,6 +7,7 @@ This is the Node.js/Express backend API for the AI Wedding Planner project.
 
 - [Project Structure](#project-structure)
 - [Controllers Structure](#controllers-structure)
+- [Validation Approach](#validation-approach)
 - [Database Setup](#database-setup)
    - [Configuration](#configuration)
    - [Where the Config Package Is Used](#where-the-config-package-is-used)
@@ -87,6 +88,22 @@ All business logic for API endpoints is organized in controller files under `src
 - `tasksController.js`: Handles task CRUD operations
 
 Each controller exports functions for: get all, get by ID, create, update, and delete. These are used by the corresponding route files in `src/routes/` for clean separation of concerns and easier testing/maintenance.
+
+---
+
+## Validation Approach
+
+We use a layered validation strategy for robust, user-friendly, and secure APIs:
+
+- **express-validator** is used in route definitions to validate and sanitize incoming request data. This provides immediate, user-friendly error messages and prevents invalid data from reaching your business logic or database.
+- **Mongoose schema validation** is enforced at the model/database level. This acts as a final safeguard, ensuring data integrity even if data is inserted or updated from sources other than your API (e.g., scripts, admin tools, or bugs in your route logic).
+
+**Why both?**
+
+- express-validator gives fast feedback and avoids unnecessary database operations.
+- Mongoose validation protects your database from all sources of invalid data.
+
+> Note: express-validator uses `min`/`max` for string length, while Mongoose uses `minlength`/`maxlength`. These are functionally equivalent for our use case.
 
 ---
 
