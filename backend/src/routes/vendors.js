@@ -8,6 +8,12 @@ const vendorController = require('../controllers/vendorController');
 const router = express.Router();
 
 // Validation rules for creating/updating a vendor
+//
+// Best practice: We use both express-validator (for request validation and user-friendly errors)
+// and Mongoose schema validation (for database integrity and as a safety net).
+//
+// Note: express-validator uses 'min'/'max' for string length, while Mongoose uses 'minlength'/'maxlength'.
+// These are functionally equivalent for our use case.
 const vendorValidationRules = [
   body('name')
     .isString().withMessage('Name must be a string')
