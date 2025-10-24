@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const Task = require('../models/Task');
 
 /**
@@ -32,9 +31,6 @@ exports.getTaskById = async (req, res) => {
  * POST /api/tasks
  */
 exports.createTask = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const task = new Task(req.body);
     await task.save();
@@ -49,9 +45,6 @@ exports.createTask = async (req, res) => {
  * PUT /api/tasks/:id
  */
 exports.updateTask = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).lean();
     if (!task) return res.status(404).json({ message: 'Task not found' });

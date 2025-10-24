@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const Budget = require('../models/Budget');
 
 /**
@@ -32,9 +31,6 @@ exports.getBudgetById = async (req, res) => {
  * POST /api/budgets
  */
 exports.createBudget = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const budget = new Budget(req.body);
     await budget.save();
@@ -49,9 +45,6 @@ exports.createBudget = async (req, res) => {
  * PUT /api/budgets/:id
  */
 exports.updateBudget = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const budget = await Budget.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).lean();
     if (!budget) return res.status(404).json({ message: 'Budget not found' });

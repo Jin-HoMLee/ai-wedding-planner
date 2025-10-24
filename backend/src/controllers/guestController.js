@@ -1,4 +1,3 @@
-const { validationResult } = require('express-validator');
 const Guest = require('../models/Guest');
 
 /**
@@ -32,9 +31,6 @@ exports.getGuestById = async (req, res) => {
  * POST /api/guests
  */
 exports.createGuest = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const guest = new Guest(req.body);
     await guest.save();
@@ -49,9 +45,6 @@ exports.createGuest = async (req, res) => {
  * PUT /api/guests/:id
  */
 exports.updateGuest = async (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
-
   try {
     const guest = await Guest.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true }).lean();
     if (!guest) return res.status(404).json({ message: 'Guest not found' });
