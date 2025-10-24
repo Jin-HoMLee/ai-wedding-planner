@@ -7,7 +7,7 @@ const config = require('config'); // Import config package to manage configurati
 const dotenv = require('dotenv');
 
 // Load environment variables from .env file
-dotenv.config({ silent: true });
+dotenv.config();
 
 // Use config package to get MongoDB URI from configuration files
 let mongoURI = config.get('mongoURI');
