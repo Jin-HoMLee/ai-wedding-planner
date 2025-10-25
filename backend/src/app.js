@@ -11,6 +11,7 @@ const vendorsRouter = require('./routes/vendors'); // Vendors route
 const budgetsRouter = require('./routes/budgets'); // Budgets route
 const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
+const chatRouter = require('./routes/chat'); // Chat route
 
 // Initialize Express app
 const app = express(); // Creates the main Express application instance
@@ -33,6 +34,7 @@ app.use('/api/vendors', vendorsRouter);
 app.use('/api/budgets', budgetsRouter);
 app.use('/api/guests', guestsRouter);
 app.use('/api/tasks', tasksRouter);
+app.use('/api/chat', chatRouter);
 
 // Export the app for use in other files (like server.js)
 module.exports = app;

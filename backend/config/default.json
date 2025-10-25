@@ -3,5 +3,10 @@
   "port": 5050,
   "api": {
     "prefix": "/api"
+  },
+  "chat": {
+    "rateLimitWindowMs": 300000,
+    "rateLimitMaxRequests": 30,
+    "maxQueryTokens": 512
   }
 }
