@@ -284,6 +284,7 @@ The config package automatically injects environment variables from `.env` into 
 - `npm start`: Starts the backend server.
 - `npm run dev`: Starts the backend with nodemon for development (if configured).
 - `npm test`: Runs automated backend tests using Jest and Supertest.
+- Unit tests only (no database required): `npx jest --config jest.unit.config.js`
 
 ---
 
@@ -521,6 +522,9 @@ Sample endpoints (see `src/routes/`):
    - `PUT /api/tasks/:id` – Update a task by ID
    - `DELETE /api/tasks/:id` – Delete a task by ID
 
+- **Chat** (AI Wedding Planning Assistant)
+   - `POST /api/chat` – Send a query to the AI wedding planning assistant
+
 > **Note:** Full CRUD operations (POST, PUT, DELETE, etc.) will be added in future updates.
 
 
@@ -630,6 +634,132 @@ You should receive a response:
 ```
 
 Detailed documentation for all endpoints can be found in the source files or will be provided in future updates.
+
+### Chat API Endpoint
+
+The Chat API provides an AI-powered wedding planning assistant that can answer questions about venues, budgets, photographers, guest lists, timelines, and more.
+
+**Endpoint:** `POST /api/chat`
+
+**Features:**
+- Mock mode (no external API calls)
+- Content moderation with keyword filtering
+- Rate limiting (30 requests per 5 minutes by default)
+- Request size validation (512 tokens ≈ 2048 characters max)
+- Metrics and logging (no PII stored)
+
+**Request Body:**
+```json
+{
+  "query": "What should I consider when choosing a wedding venue?"
+}
+```
+
+**Success Response (200):**
+```json
+{
+  "reply": "For venue selection, consider factors like capacity, location accessibility, catering options, and ambiance. Popular venue types include banquet halls, gardens, beaches, and historic estates.",
+  "tokenUsage": {
+    "input": 14,
+    "output": 48,
+    "total": 62
+  }
+}
+```
+
+**Rate Limit Response (429):**
+```json
+{
+  "error": "Too many requests",
+  "message": "Rate limit exceeded. Please try again later.",
+  "retryAfter": 300
+}
+```
+
+**Validation Error (400):**
+```json
+{
+  "error": "Bad Request",
+  "message": "Missing required field: query"
+}
+```
+
+**Moderation Block (400):**
+```json
+{
+  "error": "Content Moderation",
+  "message": "I apologize, but I cannot process that request. Please ensure your message is appropriate and doesn't contain sensitive information.",
+  "flagged": true
+}
+```
+
+**Service Error (503):**
+```json
+{
+  "error": "Service Unavailable",
+  "message": "An error occurred while processing your request. Please try again later."
+}
+```
+
+**Configuration (Environment Variables):**
+```bash
+# Rate limiting (default: 30 requests per 5 minutes)
+RATE_LIMIT_WINDOW_MS=300000
+RATE_LIMIT_MAX_REQUESTS=30
+
+# Maximum query size in tokens (default: 512 tokens ≈ 2048 characters)
+MAX_QUERY_TOKENS=512
+```
+
+**Example Usage:**
+
+Using curl:
+```bash
+# Basic query
+curl -X POST http://localhost:5050/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"query": "How much should I budget for a wedding?"}'
+
+# Query about venues
+curl -X POST http://localhost:5050/api/chat \
+  -H "Content-Type: application/json" \
+  -d '{"query": "What factors should I consider when choosing a venue?"}'
+```
+
+Using JavaScript (fetch):
+```javascript
+const response = await fetch('http://localhost:5050/api/chat', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify({
+    query: 'Tell me about wedding photography'
+  })
+});
+
+const data = await response.json();
+console.log(data.reply);
+console.log('Tokens used:', data.tokenUsage.total);
+```
+
+**Content Moderation:**
+
+The API includes content moderation to protect against unsafe or inappropriate input. Queries containing the following types of content will be blocked:
+- Abusive language
+- Sensitive personal information (credit cards, passwords, SSN)
+- Violent or threatening content
+- Hate speech
+
+Blocked queries return a 400 status code with `flagged: true`.
+
+**Metrics and Privacy:**
+
+The Chat API tracks aggregated metrics including:
+- Total requests (success, rate limit, moderation, errors)
+- Token usage (input, output, total)
+
+**No personally identifiable information (PII) or message content is logged or stored.** Only aggregate numbers are tracked for monitoring and optimization purposes.
 
 ---
 

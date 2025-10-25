@@ -57,7 +57,10 @@ function logChatRequest(status, tokenUsage = null) {
  * @returns {Object} - Current metrics
  */
 function getMetrics() {
-  return { ...metrics };
+  return {
+    requests: { ...metrics.requests },
+    tokens: { ...metrics.tokens }
+  };
 }
 
 /**
