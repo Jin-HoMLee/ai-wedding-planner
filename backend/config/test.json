@@ -1,0 +1,7 @@
+{
+  "mongoURI": "${MONGO_URI}",
+  "port": 4000,
+  "api": {
+    "prefix": "/api"
+  }
+}

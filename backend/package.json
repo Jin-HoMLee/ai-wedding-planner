@@ -1,0 +1,30 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "This is the Node.js/Express backend API for the AI Wedding Planner project.",
+  "main": "server.js",
+  "scripts": {
+    "start": "NODE_ENV=production node server.js",
+    "dev": "NODE_ENV=development nodemon server.js",
+    "test": "NODE_ENV=test jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "config": "^4.1.1",
+    "dotenv": "^17.2.3",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.1"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0",
+    "mongodb-memory-server": "^10.2.3",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
+    "tslib": "^2.8.1"
+  }
+}
