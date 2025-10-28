@@ -39,7 +39,6 @@ async function handleChatRequest(req, res) {
     logChatRequest('success', response.tokenUsage);
 
     // Attach metrics to response header in test mode, immediately before sending response
-    // Attach metrics to response header in test mode, immediately before sending response
     if (process.env.NODE_ENV === 'test') {
       res.set('X-Metrics', JSON.stringify(getMetrics()));
     }
