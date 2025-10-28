@@ -1,11 +1,10 @@
 const request = require('supertest');
 const app = require('../app');
-const { resetMetrics, getMetrics } = require('../utils/metrics');
 
 describe('Chat API', () => {
   beforeEach(() => {
     // Reset metrics before each test
-    resetMetrics();
+    app.locals.metrics.resetMetrics();
   });
 
   describe('POST /api/chat - Success cases', () => {
@@ -145,8 +144,56 @@ describe('Chat API', () => {
         .post('/api/chat')
         .send({ query: 'This contains abuse' });
       
-      const metrics = getMetrics();
+      const metrics = app.locals.metrics.getMetrics();
       expect(metrics.requests.moderation).toBe(1);
+    });
+  });
+
+  describe('POST /api/chat - Metrics tracking', () => {
+    it('should track successful requests', async () => {
+      const res = await request(app)
+        .post('/api/chat')
+        .send({ query: 'Test query' });
+
+      expect(res.statusCode).toBe(200);
+      // Check both res.headers and res.header for x-metrics
+      const metricsHeader = res.headers['x-metrics'] || res.header['x-metrics'];
+      expect(metricsHeader).toBeDefined();
+      const metrics = JSON.parse(metricsHeader);
+      expect(metrics.requests.total).toBeGreaterThan(0);
+      expect(metrics.requests.success).toBeGreaterThan(0);
+      expect(metrics.tokens.total).toBeGreaterThan(0);
+    });
+
+    it('should track token usage across requests', async () => {
+      await request(app)
+        .post('/api/chat')
+        .send({ query: 'First query' });
+
+      const res = await request(app)
+        .post('/api/chat')
+        .send({ query: 'Second query' });
+
+      expect(res.statusCode).toBe(200);
+      // Check both res.headers and res.header for x-metrics
+      const metricsHeader = res.headers['x-metrics'] || res.header['x-metrics'];
+      expect(metricsHeader).toBeDefined();
+      const metrics = JSON.parse(metricsHeader);
+      expect(metrics.requests.success).toBe(2);
+      expect(metrics.tokens.input).toBeGreaterThan(0);
+      expect(metrics.tokens.output).toBeGreaterThan(0);
+    });
+
+    it('should not log PII in metrics', async () => {
+      const personalQuery = 'My name is John Doe and my email is john@example.com';
+      await request(app)
+        .post('/api/chat')
+        .send({ query: personalQuery });
+      
+      const metrics = app.locals.metrics.getMetrics();
+      // Verify metrics only contain aggregated numbers, no PII
+      expect(JSON.stringify(metrics)).not.toContain('John Doe');
+      expect(JSON.stringify(metrics)).not.toContain('john@example.com');
     });
   });
 
@@ -179,46 +226,6 @@ describe('Chat API', () => {
       expect(rateLimitedResponse.body.error).toBe('Too many requests');
       expect(rateLimitedResponse.body).toHaveProperty('retryAfter');
     }, 15000); // Increase timeout for this test
-  });
-
-  describe('POST /api/chat - Metrics tracking', () => {
-    it('should track successful requests', async () => {
-      await request(app)
-        .post('/api/chat')
-        .send({ query: 'Test query' });
-      
-      const metrics = getMetrics();
-      expect(metrics.requests.total).toBeGreaterThan(0);
-      expect(metrics.requests.success).toBeGreaterThan(0);
-      expect(metrics.tokens.total).toBeGreaterThan(0);
-    });
-
-    it('should track token usage across requests', async () => {
-      await request(app)
-        .post('/api/chat')
-        .send({ query: 'First query' });
-      
-      await request(app)
-        .post('/api/chat')
-        .send({ query: 'Second query' });
-      
-      const metrics = getMetrics();
-      expect(metrics.requests.success).toBe(2);
-      expect(metrics.tokens.input).toBeGreaterThan(0);
-      expect(metrics.tokens.output).toBeGreaterThan(0);
-    });
-
-    it('should not log PII in metrics', async () => {
-      const personalQuery = 'My name is John Doe and my email is john@example.com';
-      await request(app)
-        .post('/api/chat')
-        .send({ query: personalQuery });
-      
-      const metrics = getMetrics();
-      // Verify metrics only contain aggregated numbers, no PII
-      expect(JSON.stringify(metrics)).not.toContain('John Doe');
-      expect(JSON.stringify(metrics)).not.toContain('john@example.com');
-    });
   });
 });
 

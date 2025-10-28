@@ -13,8 +13,14 @@ const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
 const chatRouter = require('./routes/chat'); // Chat route
 
+// Attach metrics utility to app instance for test visibility
+const metrics = require('./utils/metrics');
+
 // Initialize Express app
 const app = express(); // Creates the main Express application instance
+
+// Expose metrics utility on app.locals so tests can access the same object
+app.locals.metrics = metrics;
 
 // Middleware
 app.use(express.json()); // Automatically parse incoming JSON requests

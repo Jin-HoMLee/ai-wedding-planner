@@ -25,8 +25,7 @@ function createChatRateLimiter() {
     legacyHeaders: false, // Disable the `X-RateLimit-*` headers
     handler: (req, res) => {
       // Custom handler to log rate limit events
-      const { logChatRequest } = require('../utils/metrics');
-      logChatRequest('rate_limit');
+      req.app.locals.metrics.logChatRequest('rate_limit');
       
       res.status(429).json({
         error: 'Too many requests',

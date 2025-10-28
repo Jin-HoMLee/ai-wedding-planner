@@ -4,7 +4,6 @@
 
 const { getChatProvider } = require('../utils/chatProvider');
 const { moderateContent, getSafeFallbackMessage } = require('../utils/moderation');
-const { logChatRequest } = require('../utils/metrics');
 
 /**
  * Handle POST /api/chat request
@@ -12,17 +11,19 @@ const { logChatRequest } = require('../utils/metrics');
  * @param {Object} res - Express response object
  */
 async function handleChatRequest(req, res) {
+  // Use metrics from app locals (shared instance)
+  const { logChatRequest, getMetrics } = req.app.locals.metrics;
   try {
     const { query } = req.body;
 
     // Step 1: Content moderation
     const moderationResult = moderateContent(query);
-    
-    if (moderationResult.flagged) { // If query is flagged e.g., inappropriate
-      // Log moderation event
+    if (moderationResult.flagged) {
       logChatRequest('moderation');
-      
-      // Return safe fallback message with 400 status
+      // Attach metrics to response header in test mode, immediately before sending response
+      if (process.env.NODE_ENV === 'test') {
+        res.set('X-Metrics', JSON.stringify(getMetrics()));
+      }
       return res.status(400).json({
         error: 'Content Moderation',
         message: getSafeFallbackMessage(),
@@ -37,18 +38,25 @@ async function handleChatRequest(req, res) {
     // Step 3: Log successful request with token usage
     logChatRequest('success', response.tokenUsage);
 
+    // Attach metrics to response header in test mode, immediately before sending response
+    // Attach metrics to response header in test mode, immediately before sending response
+    if (process.env.NODE_ENV === 'test') {
+      res.set('X-Metrics', JSON.stringify(getMetrics()));
+    }
     // Step 4: Return response
     return res.status(200).json({
       reply: response.reply,
       tokenUsage: response.tokenUsage
     });
-
   } catch (error) {
     // Log error
     console.error('Error processing chat request:', error);
     logChatRequest('error');
-
-    // Return 503 Service Unavailable
+    // Attach metrics to response header in test mode
+    // Attach metrics to response header in test mode, immediately before sending response
+    if (process.env.NODE_ENV === 'test') {
+      res.set('X-Metrics', JSON.stringify(getMetrics()));
+    }
     return res.status(503).json({
       error: 'Service Unavailable',
       message: 'An error occurred while processing your request. Please try again later.'
