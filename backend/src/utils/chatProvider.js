@@ -37,6 +37,7 @@ class MockChatProvider {
     }
 
     // Calculate token usage (rough approximation)
+    // Approximate 1 token ≈ 4 characters (common heuristic for English text)
     const inputTokens = Math.ceil(query.length / 4);
     const outputTokens = Math.ceil(reply.length / 4);
 
