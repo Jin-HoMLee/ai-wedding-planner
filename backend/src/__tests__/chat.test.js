@@ -225,7 +225,7 @@ describe('Chat API', () => {
       expect(rateLimitedResponse).toBeDefined();
       expect(rateLimitedResponse.body.error).toBe('Too many requests');
       expect(rateLimitedResponse.body).toHaveProperty('retryAfter');
-    }, 15000); // Increase timeout for this test
+    }, 5000); // Reduced timeout for this test
   });
 });
 
