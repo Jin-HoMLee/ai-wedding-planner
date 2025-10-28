@@ -11,9 +11,16 @@ const vendorsRouter = require('./routes/vendors'); // Vendors route
 const budgetsRouter = require('./routes/budgets'); // Budgets route
 const guestsRouter = require('./routes/guests'); // Guests route
 const tasksRouter = require('./routes/tasks'); // Tasks route
+const chatRouter = require('./routes/chat'); // Chat route
+
+// Attach metrics utility to app instance for test visibility
+const metrics = require('./utils/metrics');
 
 // Initialize Express app
 const app = express(); // Creates the main Express application instance
+
+// Expose metrics utility on app.locals so tests can access the same object
+app.locals.metrics = metrics;
 
 // Middleware
 app.use(express.json()); // Automatically parse incoming JSON requests
@@ -33,6 +40,7 @@ app.use('/api/vendors', vendorsRouter);
 app.use('/api/budgets', budgetsRouter);
 app.use('/api/guests', guestsRouter);
 app.use('/api/tasks', tasksRouter);
+app.use('/api/chat', chatRouter);
 
 // Export the app for use in other files (like server.js)
 module.exports = app;
