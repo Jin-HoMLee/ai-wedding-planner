@@ -57,7 +57,8 @@ class MockChatProvider {
    * @returns {Promise<void>}
    */
   _simulateDelay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms)); // resolve() is a JS Promise() inherent function, that successfully resolves the promise
+    // new Promise((resolve, reject) => setTimeout(reject, ms)); // would simulate a failed promise after delay
   }
 }
 

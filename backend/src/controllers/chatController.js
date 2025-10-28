@@ -1,5 +1,6 @@
 // backend/src/controllers/chatController.js
 // Controller for handling chat API requests
+// Implements content moderation, interacts with chat provider, and logs metrics
 
 const { getChatProvider } = require('../utils/chatProvider');
 const { moderateContent, getSafeFallbackMessage } = require('../utils/moderation');
@@ -17,7 +18,7 @@ async function handleChatRequest(req, res) {
     // Step 1: Content moderation
     const moderationResult = moderateContent(query);
     
-    if (moderationResult.flagged) {
+    if (moderationResult.flagged) { // If query is flagged e.g., inappropriate
       // Log moderation event
       logChatRequest('moderation');
       

@@ -24,7 +24,7 @@ const metrics = {
 /**
  * Log a chat request metric
  * @param {string} status - Request status: 'success', 'rate_limit', 'moderation', 'error'
- * @param {Object} tokenUsage - Optional token usage data
+ * @param {Object} tokenUsage - Optional token usage data to track how many tokens were used during a chat request
  */
 function logChatRequest(status, tokenUsage = null) {
   metrics.requests.total++;
